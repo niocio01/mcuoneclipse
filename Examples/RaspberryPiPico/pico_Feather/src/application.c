@@ -95,6 +95,7 @@ uint8_t App_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell
 }
 
 static McuGPIO_Handle_t v_aux_pin_handle;
+static McuGPIO_Handle_t i2c_aux_pin_handle;
 
 static void v_aux_on(void) {
   McuGPIO_SetLow(v_aux_pin_handle); /* V_AUX is LOW active */
@@ -102,6 +103,14 @@ static void v_aux_on(void) {
 
 static void v_aux_off(void) {
   McuGPIO_SetHigh(v_aux_pin_handle); /* V_AUX is LOW active */
+}
+
+static void i2c_aux_on(void) {
+  McuGPIO_SetLow(v_aux_pin_handle); /* I2C_AUX is LOW active */
+}
+
+static void i2c_aux_off(void) {
+  McuGPIO_SetHigh(v_aux_pin_handle); /* I2C_AUX is LOW active */
 }
 
 static void init_v_aux(void) {
@@ -117,10 +126,26 @@ static void init_v_aux(void) {
   }
 }
 
+static void init_i2c_aux(void) {
+  McuGPIO_Config_t config;
+
+  McuGPIO_GetDefaultConfig(&config);
+  config.hw.pin = 6; /* GPIO6, D4/pin 16 on feather*/
+  config.isInput = false;
+  config.isHighOnInit = true; /* v_aux enable is LOW active. Have it disabled at the beginning. */
+  v_aux_pin_handle = McuGPIO_InitGPIO(&config);
+  if (v_aux_pin_handle==NULL) {
+    for(;;){}
+  }
+}
+
+
 void App_Run(void) {
   PL_Init();
   init_v_aux(); /* default */
+  init_i2c_aux(); /* default */
   v_aux_on(); /* turn power on */
+  i2c_aux_off();
   if (xTaskCreate(
       AppTask,  /* pointer to the task */
       "App", /* task name for kernel awareness debugging */

@@ -27,6 +27,9 @@ extern "C" {
 #define PL_CONFIG_USE_MININI          (0)
 #define PL_CONFIG_USE_NVMC            (0)
 
+/* RTC */
+#define PL_CONFIG_USE_RTC             (1) /* RTC support using PCF85263A.h */
+
 void PL_Init(void);
 void PL_Deinit(void);
 

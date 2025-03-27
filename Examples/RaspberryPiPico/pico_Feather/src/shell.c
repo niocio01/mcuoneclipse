@@ -33,6 +33,9 @@
   #include "RNet/RStdIO.h"
   #include "RNet_App.h"
 #endif
+#if PL_CONFIG_USE_RTC
+  #include "McuPCF85263A.h"
+#endif
 
 typedef struct {
   McuShell_ConstStdIOType *stdio;
@@ -82,6 +85,9 @@ static const McuShell_ParseCommandCallback CmdParserTable[] =
 #if PL_HAS_RADIO
   McuRNet_ParseCommand,
   RNETA_ParseCommand,
+#endif
+#if PL_CONFIG_USE_RTC
+  McuPCF85263A_ParseCommand,
 #endif
   NULL /* Sentinel */
 };
