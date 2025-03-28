@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../McuLib"
+		}
+	],
+	"settings": {
+		"cmake.options.statusBarVisibility": "visible",		
+	}
+}

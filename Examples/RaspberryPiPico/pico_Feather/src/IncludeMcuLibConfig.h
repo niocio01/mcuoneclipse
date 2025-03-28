@@ -75,9 +75,9 @@
 /* I2C */
 #define CONFIG_USE_HW_I2C                           (1) /* if using HW I2C, otherwise use software bit banging */
 #define CONFIG_USE_HW_RTC                           (0) /* if using external HW RTC */
-#define MCUI2CLIB_CONFIG_I2C_DEVICE                 i2c0
-#define MCUI2CLIB_CONFIG_SDA_GPIO_PIN               02u
-#define MCUI2CLIB_CONFIG_SCL_GPIO_PIN               03u
+#define MCUI2CLIB_CONFIG_I2C_DEVICE                 i2c1
+#define MCUI2CLIB_CONFIG_SDA_GPIO_PIN               2u
+#define MCUI2CLIB_CONFIG_SCL_GPIO_PIN               3u
 #define MCUI2CLIB_CONFIG_ADD_DELAY_US               (0)
 #define MCUI2CLIB_CONFIG_TIMEOUT_BYTE_US            (1000)
 /* -------------------------------------------------*/
