@@ -28,7 +28,13 @@ extern "C" {
 #define PL_CONFIG_USE_NVMC            (0)
 
 /* RTC */
-#define PL_CONFIG_USE_RTC             (1) /* RTC support using PCF85263A.h */
+#define PL_CONFIG_USE_RTC             (0) /* RTC support using PCF85263A.h */
+
+/* STHS34PF80 sensor */
+#define PL_CONFIG_USE_IR_SENS_HW      (1) /* STHS34PF80 sensor support */
+
+/* VL53L5CX sensor */
+#define PL_CONFIG_USE_MULTI_TOF_HW    (1) /* VL53L5CX sensor support */
 
 void PL_Init(void);
 void PL_Deinit(void);

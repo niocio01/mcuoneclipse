@@ -67,6 +67,8 @@ set(TEST_EXECUTABLE   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.elf")
 add_compile_options(-include "${PROJECT_ROOT_DIR}/src/IncludeMcuLibConfig.h")
 include_directories("${MCULIB_DIR}/src")
 include_directories("${PROJECT_ROOT_DIR}/src")
+# include_directories("${PROJECT_ROOT_DIR}/lib/VL53L5CX_ULD_API/src")
+# include_directories("${PROJECT_ROOT_DIR}/lib/VL53L5CX_ULD_API/inc")
 
 # add linker flags to print cross-reference table in map file and memory usage on console
 add_link_options(-Wl,--cref,--print-memory-usage)

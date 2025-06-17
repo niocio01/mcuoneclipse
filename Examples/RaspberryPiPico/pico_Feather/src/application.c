@@ -21,6 +21,18 @@
 #include "McuArmTools.h"
 #include "McuTimeDate.h"
 
+#include "SensorReadTask.h"
+#if PL_HAS_RADIO
+  #include "RNet_App.h"
+#endif
+
+#if PL_CONFIG_USE_MULTI_TOF_HW
+  #include "McuVL53L5CX.h"
+#endif
+#if PL_CONFIG_USE_IR_SENS_HW
+  #include "McuSTHS34pf80.h"
+#endif
+
 #if !PL_CONFIG_USE_PICO_W
   #define LED_PIN   (13) /* GPIO 13, little red led on feather */
 #endif
@@ -31,7 +43,7 @@ static void vTimerCallbackExpired(TimerHandle_t pxTimer) {
   McuTimeDate_AddTick();
 }
 
-static void AppTask(void *pv) {
+static void BlinkTask(void *pv) {
   #define APP_HAS_ONBOARD_GREEN_LED   (0) /*(!PL_CONFIG_USE_PICO_W)*/
 
 #if APP_HAS_ONBOARD_GREEN_LED
@@ -63,6 +75,47 @@ static void AppTask(void *pv) {
     toggle = !toggle;
     NEO_TransferPixels();
   #endif
+    vTaskDelay(pdMS_TO_TICKS(10*100));
+  }
+}
+
+static void SensorReadTask(void *pv) {
+  #if PL_CONFIG_USE_MULTI_TOF_HW
+    bool TofIsReady;
+    VL53L5CX_ResultsData Results;
+    TofIsReady = McuVL53L5CX_Programm() == ERR_OK;
+    if (TofIsReady) {
+      McuVL53L5CX_StartRanging();
+    }
+    else {      
+      vTaskSuspend(NULL); /* suspend task if sensor not ready */
+    }
+  #endif
+
+  for(;;) {
+    #if PL_CONFIG_USE_MULTI_TOF_HW 
+    if (McuVL53L5CX_IsDataReady())
+    {
+      McuVL53L5CX_GetRangingData(&Results);
+      McuLog_info("Distance: %d mm", Results.distance_mm[0]);
+    }
+    #endif
+    
+    #if PL_CONFIG_USE_IR_SENS_HW
+     if(McuSTHS34pf80_IsDataReady())
+     {
+      bool presenceFlag;
+      int16_t presenceVal;
+      McuSTHS34pf80_GetPresence(&presenceFlag, &presenceVal);
+      if (presenceFlag) {
+        McuLog_info("Presence detected: %d", presenceVal);        
+      } else {
+        McuLog_info("No presence detected");
+      }
+      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, presenceVal, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+     }
+    #endif
+      
     vTaskDelay(pdMS_TO_TICKS(10*100));
   }
 }
@@ -106,11 +159,11 @@ static void v_aux_off(void) {
 }
 
 static void i2c_aux_on(void) {
-  McuGPIO_SetLow(v_aux_pin_handle); /* I2C_AUX is LOW active */
+  McuGPIO_SetLow(i2c_aux_pin_handle); /* I2C_AUX is LOW active */
 }
 
 static void i2c_aux_off(void) {
-  McuGPIO_SetHigh(v_aux_pin_handle); /* I2C_AUX is LOW active */
+  McuGPIO_SetHigh(i2c_aux_pin_handle); /* I2C_AUX is LOW active */
 }
 
 static void init_v_aux(void) {
@@ -128,27 +181,29 @@ static void init_v_aux(void) {
 
 static void init_i2c_aux(void) {
   McuGPIO_Config_t config;
-
   McuGPIO_GetDefaultConfig(&config);
   config.hw.pin = 6; /* GPIO6, D4/pin 16 on feather*/
   config.isInput = false;
   config.isHighOnInit = true; /* v_aux enable is LOW active. Have it disabled at the beginning. */
-  v_aux_pin_handle = McuGPIO_InitGPIO(&config);
-  if (v_aux_pin_handle==NULL) {
+  i2c_aux_pin_handle = McuGPIO_InitGPIO(&config);
+  if (i2c_aux_pin_handle==NULL) {
     for(;;){}
   }
 }
 
 
 void App_Run(void) {
-  PL_Init();
   init_v_aux(); /* default */
   init_i2c_aux(); /* default */
-  v_aux_on(); /* turn power on */
-  i2c_aux_off();
+  
+  v_aux_on();
+  i2c_aux_on();
+  
+  PL_Init();
+  
   if (xTaskCreate(
-      AppTask,  /* pointer to the task */
-      "App", /* task name for kernel awareness debugging */
+      BlinkTask,  /* pointer to the task */
+      "Blink", /* task name for kernel awareness debugging */
       1500/sizeof(StackType_t), /* task stack size */
       (void*)NULL, /* optional task startup argument */
       tskIDLE_PRIORITY+2,  /* initial priority */
@@ -158,6 +213,22 @@ void App_Run(void) {
     McuLog_fatal("failed creating task");
     for(;;){} /* error! probably out of memory */
   }
+
+  #if 1
+  if (xTaskCreate(
+      SensorReadTask,  /* pointer to the task */
+      "SensRead", /* task name for kernel awareness debugging */
+      2*1024/sizeof(StackType_t), /* task stack size */
+      (void*)NULL, /* optional task startup argument */
+      tskIDLE_PRIORITY+3,  /* initial priority */
+      (TaskHandle_t*)NULL /* optional task handle to create */
+    ) != pdPASS)
+  {
+    McuLog_fatal("failed creating task");
+    for(;;){} /* error! probably out of memory */
+  }
+  #endif
+
   timerHndl = xTimerCreate(
         "timer", /* name */
         pdMS_TO_TICKS(McuTimeDate_CONFIG_TICK_TIME_MS), /* period/time */

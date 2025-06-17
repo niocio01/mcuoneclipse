@@ -33,10 +33,20 @@
   #include "NeoPixel.h"
   #include "ws2812.h"
 #endif
-#if PL_CONFIG_USE_RTC==1
+#if PL_CONFIG_USE_RTC
   #include "McuPCF85263A.h"
   #define PL_CONFIG_USE_HW_I2C (1)
 #endif
+#if PL_CONFIG_USE_IR_SENS_HW
+  #include "McuSTHS34pf80.h"
+  #define PL_CONFIG_USE_HW_I2C (1)
+#endif
+
+#if PL_CONFIG_USE_MULTI_TOF_HW
+  #include "McuVL53L5CX.h"
+  #define PL_CONFIG_USE_HW_I2C (1)
+#endif
+
 #if PL_CONFIG_USE_TUD_CDC
   #include "McuShellCdcDevice.h"
 #endif
@@ -112,8 +122,14 @@ void PL_Init(void) {
   WS2812_Init();
   NEO_Init();
 #endif
-#if PL_CONFIG_USE_RTC_PCF85263A
-  McuRTC_PCF85263A_Init();
+#if PL_CONFIG_USE_RTC
+  McuPCF85263A_Init();
 #endif
+#if PL_CONFIG_USE_IR_SENS_HW
+  McuSTHS34pf80_Init();
+# endif
+#if PL_CONFIG_USE_MULTI_TOF_HW
+  McuVL53L5CX_Init();
+# endif
 
 }

@@ -8,6 +8,27 @@
 		}
 	],
 	"settings": {
-		"cmake.options.statusBarVisibility": "visible",		
+		"cmake.options.statusBarVisibility": "visible",
+		"files.associations": {
+			"application.h": "c",
+			"mcupcf85263a.h": "c",
+			"neopixel.h": "c",
+			"sths34pf80_reg.h": "c",
+			"mcusths34pf80.h": "c",
+			"stdint.h": "c",
+			"mcushell.h": "c",
+			"neoconfig.h": "c",
+			"stdbool.h": "c",
+			"mcupcf85263a_config.h": "c",
+			"cstdlib": "c",
+			"mcupcf85063a_config.h": "c",
+			"vl53l5cx_platform.h": "c",
+			"vl53l5cx_api.h": "c",
+			"mcuvl53l5cx.h": "c",
+			"mcuvl53l5cx_config.h": "c",
+			"sensorreadtask.h": "c",
+			"rnet_app.h": "c"
+		},
+		
 	}
 }
