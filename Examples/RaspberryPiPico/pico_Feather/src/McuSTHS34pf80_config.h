@@ -9,8 +9,8 @@
 
 #include "platform.h"
 
-#if PL_CONFIG_USE_IR_SENS_HW
+#if PL_CONFIG_USE_IR_SENS
 
-#endif /* PL_CONFIG_USE_IR_SENS_STHS34PF80_HW */
+#endif /* PL_CONFIG_USE_IR_SENS */
 
 #endif /* MCU_STHS34PF80_CONFIG_H_ */

@@ -9,8 +9,8 @@
 
 #include "platform.h"
  
-#if PL_CONFIG_USE_MULTI_TOF_HW
+#if PL_CONFIG_USE_MULTI_TOF
 
-#endif /* PL_CONFIG_USE_MULTI_TOF_HW */
+#endif /* PL_CONFIG_USE_MULTI_TOF */
  
 #endif /* MCU_VL53L5CX_CONFIG_H_ */

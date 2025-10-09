@@ -112,7 +112,7 @@ static void SensorReadTask(void *pv) {
       } else {
         McuLog_info("No presence detected");
       }
-      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, presenceVal, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+      // RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, presenceVal, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
      }
     #endif
       

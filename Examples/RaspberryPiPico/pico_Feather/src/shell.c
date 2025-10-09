@@ -36,6 +36,9 @@
 #if PL_CONFIG_USE_RTC
   #include "McuPCF85263A.h"
 #endif
+#if PL_CONFIG_USE_US_SENS
+  #include "McuSRT04T.h"
+#endif
 
 typedef struct {
   McuShell_ConstStdIOType *stdio;
@@ -88,6 +91,9 @@ static const McuShell_ParseCommandCallback CmdParserTable[] =
 #endif
 #if PL_CONFIG_USE_RTC
   McuPCF85263A_ParseCommand,
+#endif
+#if PL_CONFIG_USE_US_SENS
+  McuSRT04T_ParseCommand,
 #endif
   NULL /* Sentinel */
 };

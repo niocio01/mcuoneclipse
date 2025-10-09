@@ -103,6 +103,7 @@ pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
 target_link_libraries(
   ${CMAKE_PROJECT_NAME}
   PRIVATE pico_stdlib
+  PRIVATE hardware_uart
   PUBLIC srcLib
 )
 ##################################################################################
@@ -123,3 +124,12 @@ if (ENABLE_UNIT_TESTING)
   message(STATUS "Adding unity")
   add_subdirectory(${MCULIB_DIR}/unity   unity)
 endif()
+##################################################################################
+
+pico_enable_stdio_uart(${CMAKE_PROJECT_NAME} 1) 
+
+target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+  PICO_DEFAULT_UART=0
+  PICO_DEFAULT_UART_RX_PIN=1
+  PICO_DEFAULT_UART_TX_PIN=0
+)

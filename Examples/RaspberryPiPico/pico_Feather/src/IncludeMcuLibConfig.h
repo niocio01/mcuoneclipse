@@ -128,6 +128,9 @@
 #define McuShell_CONFIG_MULTI_CMD_ENABLED           (1)
 #define McuShell_CONFIG_MULTI_CMD_SIZE              (96)
 #define McuShell_CONFIG_DEFAULT_SHELL_BUFFER_SIZE   (128)
+/* McuShellCdcDevice with tinyUSB */
+#define McuShellCdcDevice_CONFIG_IS_ENABLED     (1)
+
 /* ---------------------------------------------------------------------- */
 /* McuTimeDate */
 #define McuTimeDate_CONFIG_TICK_TIME_MS             (100)
@@ -165,22 +168,19 @@
 #define McuNRF24L01_CONFIG_IS_ENABLED           (1)
 #define McuNRF24L01_CONFIG_USE_MUTEX            (0)
 #define McuNRF24L01_CONFIG_CE_PIN_NUMBER        (29) /* GPIO29 -> A3/pin8 on feather */
-#define McuNRF24L01_CONFIG_CSN_PIN_NUMBER       (24) /* GPIO14 -> D24/pin9 on feather */
-#define McuNRF24L01_CONFIG_IRQ_PIN_NUMBER       (7)  /* GPIO7 -> D5 - > A5/pin10 on feather */
+#define McuNRF24L01_CONFIG_CSN_PIN_NUMBER       (24) /* GPIO24 -> D24/pin9 on feather */
+#define McuNRF24L01_CONFIG_IRQ_PIN_NUMBER       (7) /* GPIO25 -> D24/pin10 on feather */
 #define McuNRF24L01_CONFIG_IRQ_PIN_ENABLED      (1)
 /* ---------------------------------------------------------------------------------------*/
 /* McuRNET */
 #define McuRNET_CONFIG_IS_ENABLED               (1)
 #define RNet_App_CONFIG_DO_SANITY_CHECK         (0)
 #define McuRNet_CONFIG_APPLICATION_HEADER_FILE  "RNet_AppConfig.h"
-#define RNET_CONFIG_TRANSCEIVER_CHANNEL         (120) /* channel, default 81 */
+#define RNET_CONFIG_TRANSCEIVER_CHANNEL         (81) /* channel, default 81 */
 #define RNET_CONFIG_NRF24_DATA_RATE             McuNRF24L01_RF_SETUP_RF_DR_2000
 #define RSTDIO_CONFIG_QUEUE_LENGTH              (5*48) /* default is 48 */
 #define RNET_CONFIG_MSG_QUEUE_NOF_RX_ITEMS      (32) /* default is 15 */
 #define RNET_CONFIG_MSG_QUEUE_NOF_TX_ITEMS      (32) /* default is 15 */
-/* ---------------------------------------------------------------------------------------*/
-/* McuShellCdcDevice with tinyUSB */
-#define McuShellCdcDevice_CONFIG_IS_ENABLED     (1)
 /* ---------------------------------------------------------------------------------------*/
 
 #endif /* MCULIB_CONFIG_CONFIG_H_ */

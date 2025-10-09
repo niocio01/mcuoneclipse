@@ -35,16 +35,17 @@
 #endif
 #if PL_CONFIG_USE_RTC
   #include "McuPCF85263A.h"
-  #define PL_CONFIG_USE_HW_I2C (1)
 #endif
-#if PL_CONFIG_USE_IR_SENS_HW
+#if PL_CONFIG_USE_IR_SENS
   #include "McuSTHS34pf80.h"
-  #define PL_CONFIG_USE_HW_I2C (1)
 #endif
 
-#if PL_CONFIG_USE_MULTI_TOF_HW
+#if PL_CONFIG_USE_MULTI_TOF
   #include "McuVL53L5CX.h"
-  #define PL_CONFIG_USE_HW_I2C (1)
+#endif
+
+#if PL_CONFIG_USE_US_SENS
+  #include "McuSRT04T.h"
 #endif
 
 #if PL_CONFIG_USE_TUD_CDC
@@ -125,11 +126,14 @@ void PL_Init(void) {
 #if PL_CONFIG_USE_RTC
   McuPCF85263A_Init();
 #endif
-#if PL_CONFIG_USE_IR_SENS_HW
+#if PL_CONFIG_USE_IR_SENS
   McuSTHS34pf80_Init();
-# endif
-#if PL_CONFIG_USE_MULTI_TOF_HW
+#endif
+#if PL_CONFIG_USE_MULTI_TOF
   McuVL53L5CX_Init();
-# endif
+#endif
+#if PL_CONFIG_USE_US_SENS
+  McuSRT04T_Init();
+#endif
 
 }
