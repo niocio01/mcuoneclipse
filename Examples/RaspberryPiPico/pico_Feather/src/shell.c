@@ -39,6 +39,9 @@
 #if PL_CONFIG_USE_US_SENS
   #include "McuSRT04T.h"
 #endif
+#if PL_CONFIG_USE_BATTERY
+  #include "McuBattery.h"
+#endif
 
 typedef struct {
   McuShell_ConstStdIOType *stdio;
@@ -94,6 +97,9 @@ static const McuShell_ParseCommandCallback CmdParserTable[] =
 #endif
 #if PL_CONFIG_USE_US_SENS
   McuSRT04T_ParseCommand,
+#endif
+#if PL_CONFIG_USE_BATTERY
+  McuBattery_ParseCommand,
 #endif
   NULL /* Sentinel */
 };

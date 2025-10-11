@@ -30,15 +30,22 @@ extern "C" {
 /* RTC */
 #define PL_CONFIG_USE_RTC             (0) /* RTC support using PCF85263A.h */
 
-/* STHS34PF80 sensor */
-#define PL_CONFIG_USE_IR_SENS         (0) /* STHS34PF80 sensor support */
+/* STHS34PF80 IR sensor */
+#define PL_CONFIG_USE_IR_SENS         (1) /* STHS34PF80 sensor support */
 
-/* VL53L5CX sensor */
+/* VL53L5CX TOF sensor */
 #define PL_CONFIG_USE_MULTI_TOF       (0) /* VL53L5CX sensor support */
 
-/* SRT04T sensor */
-#define PL_CONFIG_USE_US_SENS         (1) /* SR04T sensor support */
+/* SRT04T UR ensor */
+#define PL_CONFIG_USE_US_SENS         (0) /* SR04T sensor support */
 
+/* Battery voltage measurement */
+#define PL_CONFIG_USE_BATTERY         (1) /* Battery voltage measurement via ADC */
+
+/* I2C */
+#if (PL_CONFIG_USE_RTC || PL_CONFIG_USE_IR_SENS || PL_CONFIG_USE_MULTI_TOF)
+    #define PL_CONFIG_USE_HW_I2C       (1) /* if using hardware I2C */
+#endif
 
 
 void PL_Init(void);

@@ -169,7 +169,7 @@
 #define McuNRF24L01_CONFIG_USE_MUTEX            (0)
 #define McuNRF24L01_CONFIG_CE_PIN_NUMBER        (29) /* GPIO29 -> A3/pin8 on feather */
 #define McuNRF24L01_CONFIG_CSN_PIN_NUMBER       (24) /* GPIO24 -> D24/pin9 on feather */
-#define McuNRF24L01_CONFIG_IRQ_PIN_NUMBER       (7) /* GPIO25 -> D24/pin10 on feather */
+#define McuNRF24L01_CONFIG_IRQ_PIN_NUMBER       (25) /* GPIO25 -> D24/pin10 on feather */
 #define McuNRF24L01_CONFIG_IRQ_PIN_ENABLED      (1)
 /* ---------------------------------------------------------------------------------------*/
 /* McuRNET */

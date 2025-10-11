@@ -48,6 +48,10 @@
   #include "McuSRT04T.h"
 #endif
 
+#if PL_CONFIG_USE_BATTERY
+  #include "McuBattery.h"
+#endif
+
 #if PL_CONFIG_USE_TUD_CDC
   #include "McuShellCdcDevice.h"
 #endif
@@ -134,6 +138,9 @@ void PL_Init(void) {
 #endif
 #if PL_CONFIG_USE_US_SENS
   McuSRT04T_Init();
+#endif
+#if PL_CONFIG_USE_BATTERY
+  McuBattery_Init();
 #endif
 
 }

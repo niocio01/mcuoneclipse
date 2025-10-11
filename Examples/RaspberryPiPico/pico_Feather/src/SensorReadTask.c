@@ -1,14 +1,14 @@
 #include "SensorReadTask.h"
 
-#if PL_CONFIG_USE_MULTI_TOF_HW
+#if PL_CONFIG_USE_MULTI_TOF
   #include "McuVL53L5CX.h"
 #endif
-#if PL_CONFIG_USE_IR_SENS_HW
+#if PL_CONFIG_USE_IR_SENS
   #include "McuSTHS34pf80.h"
 #endif
 
 void ReadSensors(void) {
-  #if PL_CONFIG_USE_MULTI_TOF_HW
+  #if PL_CONFIG_USE_MULTI_TOF
     bool TofIsReady;
     VL53L5CX_ResultsData Results;
     TofIsReady = McuVL53L5CX_Programm() == ERR_OK;
@@ -21,7 +21,7 @@ void ReadSensors(void) {
   #endif
 
   for(;;) {
-    #if PL_CONFIG_USE_MULTI_TOF_HW 
+    #if PL_CONFIG_USE_MULTI_TOF
     if (McuVL53L5CX_IsDataReady())
     {
       McuVL53L5CX_GetRangingData(&Results);
@@ -29,7 +29,7 @@ void ReadSensors(void) {
     }
     #endif
     
-    #if PL_CONFIG_USE_IR_SENS_HW
+    #if PL_CONFIG_USE_IR_SENS
      if(McuSTHS34pf80_IsDataReady())
      {
       bool presenceFlag;

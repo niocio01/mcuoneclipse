@@ -48,6 +48,7 @@ target_link_libraries(
   PRIVATE pico_stdio_semihosting
   PRIVATE hardware_pio  # WS2812B
   PRIVATE hardware_dma
+  PRIVATE hardware_adc  # Battery module ADC
 
   PUBLIC rdimonLib # file I/O with semihosting
   PUBLIC gcov      # GNU gcov library

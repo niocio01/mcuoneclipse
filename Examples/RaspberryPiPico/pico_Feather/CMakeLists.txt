@@ -103,7 +103,6 @@ pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
 target_link_libraries(
   ${CMAKE_PROJECT_NAME}
   PRIVATE pico_stdlib
-  PRIVATE hardware_uart
   PUBLIC srcLib
 )
 ##################################################################################

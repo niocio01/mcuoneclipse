@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2025, SRT04T Ultrasonic Distance Sensor Module
+ * Copyright (c) 2025, Nico Zuber
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #include "McuSRT04T.h"
-
 #include "hardware/uart.h"
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"

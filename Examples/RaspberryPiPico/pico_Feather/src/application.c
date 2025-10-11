@@ -26,10 +26,10 @@
   #include "RNet_App.h"
 #endif
 
-#if PL_CONFIG_USE_MULTI_TOF_HW
+#if PL_CONFIG_USE_MULTI_TOF
   #include "McuVL53L5CX.h"
 #endif
-#if PL_CONFIG_USE_IR_SENS_HW
+#if PL_CONFIG_USE_IR_SENS
   #include "McuSTHS34pf80.h"
 #endif
 
@@ -80,7 +80,7 @@ static void BlinkTask(void *pv) {
 }
 
 static void SensorReadTask(void *pv) {
-  #if PL_CONFIG_USE_MULTI_TOF_HW
+  #if PL_CONFIG_USE_MULTI_TOF
     bool TofIsReady;
     VL53L5CX_ResultsData Results;
     TofIsReady = McuVL53L5CX_Programm() == ERR_OK;
@@ -93,7 +93,7 @@ static void SensorReadTask(void *pv) {
   #endif
 
   for(;;) {
-    #if PL_CONFIG_USE_MULTI_TOF_HW 
+    #if PL_CONFIG_USE_MULTI_TOF
     if (McuVL53L5CX_IsDataReady())
     {
       McuVL53L5CX_GetRangingData(&Results);
