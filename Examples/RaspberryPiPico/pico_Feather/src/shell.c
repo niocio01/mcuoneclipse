@@ -42,6 +42,9 @@
 #if PL_CONFIG_USE_BATTERY
   #include "McuBattery.h"
 #endif
+#if PL_CONFIG_USE_IR_SENS
+  #include "McuSTHS34pf80.h"
+#endif
 
 static const McuShell_ParseCommandCallback CmdParserTable[] =
 {
@@ -81,6 +84,9 @@ static const McuShell_ParseCommandCallback CmdParserTable[] =
 #endif
 #if PL_CONFIG_USE_BATTERY
   McuBattery_ParseCommand,
+#endif
+#if PL_CONFIG_USE_IR_SENS
+  McuSTHS34pf80_ParseCommand,
 #endif
   NULL /* Sentinel */
 };

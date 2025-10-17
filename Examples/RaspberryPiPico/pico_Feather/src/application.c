@@ -80,6 +80,11 @@ static void BlinkTask(void *pv) {
 }
 
 static void SensorReadTask(void *pv) {
+  #if PL_CONFIG_USE_IR_SENS
+    uint16_t presenceVal = 0;
+    uint16_t lastPresenceVal = 0;
+  #endif
+
   #if PL_CONFIG_USE_MULTI_TOF
     bool TofIsReady;
     VL53L5CX_ResultsData Results;
@@ -101,22 +106,26 @@ static void SensorReadTask(void *pv) {
     }
     #endif
     
-    #if PL_CONFIG_USE_IR_SENS_HW
+    #if PL_CONFIG_USE_IR_SENS && McuSTHS34PF80_CONFIG_USE_INTERRUPT != 1 
      if(McuSTHS34pf80_IsDataReady())
-     {
+     {      
       bool presenceFlag;
-      int16_t presenceVal;
       McuSTHS34pf80_GetPresence(&presenceFlag, &presenceVal);
-      if (presenceFlag) {
-        McuLog_info("Presence detected: %d", presenceVal);        
-      } else {
-        McuLog_info("No presence detected");
+      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, presenceVal, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+      if (presenceVal != lastPresenceVal) {
+        if (presenceFlag) {
+          McuLog_info("Presence detected: %d", presenceVal);   
+        } else {
+          McuLog_info("No presence detected");
+        }
+        // RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, presenceVal, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+        lastPresenceVal = presenceVal;
       }
       // RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, presenceVal, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
      }
     #endif
       
-    vTaskDelay(pdMS_TO_TICKS(10*100));
+    vTaskDelay(pdMS_TO_TICKS(5*1000));
   }
 }
 
@@ -191,6 +200,31 @@ static void init_i2c_aux(void) {
   }
 }
 
+/* callback for IR presence interrupt */
+void McuSTHS34PF80_OnInterrupt(void)
+{  
+  static uint8_t presence = 0;
+  static uint8_t motion = 0;
+  sths34pf80_func_status_t func_status;
+
+  McuSTHS34pf80_GetFuncStatus(&func_status);
+
+  if (func_status.pres_flag != presence)
+  {
+    presence = func_status.pres_flag;
+
+    if (presence)
+    {
+      McuLog_info("Start of Presence\r\n");
+      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, 1, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+    }
+    else
+    {
+      McuLog_info("End of Presence\r\n");
+      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION, 0, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+    }
+  }
+}
 
 void App_Run(void) {
   init_v_aux(); /* default */
@@ -200,6 +234,10 @@ void App_Run(void) {
   i2c_aux_on();
   
   PL_Init();
+
+  #if PL_CONFIG_USE_IR_SENS && McuSTHS34PF80_CONFIG_USE_INTERRUPT
+    McuSTHS34pf80_RegisterIntruptCallback(McuSTHS34PF80_OnInterrupt);
+  #endif
   
   if (xTaskCreate(
       BlinkTask,  /* pointer to the task */

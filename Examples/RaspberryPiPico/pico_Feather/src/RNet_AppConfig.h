@@ -47,6 +47,7 @@ typedef enum {
   RAPP_MSG_TYPE_DATA_ID_SUMO_RADAR=14,      /* Radar, 0: off, 1: on */
   RAPP_MSG_TYPE_DATA_ID_SUMO_START_LEFT=15, /* first turn, 0: right, 1: left */
   RAPP_MSG_TYPE_DATA_ID_PRESENCE_DETECTION=16, /* Presence detection, 0: no presence, 1: presence */
+  RAPP_MSG_TYPE_DATA_ID_MOTION_DETECTION=17,   /* Motion detection, 0: no motion, 1: motion */
 } RAPP_MSG_DataIDType;
 
 #ifndef RNet_App_CONFIG_DO_SANITY_CHECK

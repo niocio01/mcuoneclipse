@@ -37,7 +37,7 @@ extern "C" {
 /* VL53L5CX TOF sensor */
 #define PL_CONFIG_USE_MULTI_TOF       (0) /* VL53L5CX sensor support */
 
-/* SRT04T UR ensor */
+/* SRT04T UR sensor */
 #define PL_CONFIG_USE_US_SENS         (0) /* SR04T sensor support */
 
 /* Battery voltage measurement */

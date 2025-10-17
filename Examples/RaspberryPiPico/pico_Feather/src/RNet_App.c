@@ -123,6 +123,19 @@ void RNETA_Init(void) {
   }
 }
 
+uint8_t RNETA_SendIdValuePairMessage(uint8_t msgType, uint16_t id, uint32_t value, RAPP_ShortAddrType addr, RAPP_FlagsType flags) {
+  uint8_t dataBuf[6]; /* 2 byte ID followed by 4 byte data */
+
+  if (msgType==RAPP_MSG_TYPE_QUERY_VALUE) { /* only sending query with the ID, no value needed */
+    McuUtility_SetValue16LE(id, &dataBuf[0]);
+    return RAPP_SendPayloadDataBlock(dataBuf, sizeof(id), msgType, addr, flags);
+  } else {
+    McuUtility_SetValue16LE(id, &dataBuf[0]);
+    McuUtility_SetValue32LE(value, &dataBuf[2]);
+    return RAPP_SendPayloadDataBlock(dataBuf, sizeof(dataBuf), msgType, addr, flags);
+  }
+}
+
 #if PL_CONFIG_USE_SHELL
 static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   uint8_t buf[32];
@@ -200,7 +213,7 @@ uint8_t RNETA_ParseCommand(const unsigned char *cmd, bool *handled, const McuShe
     p = cmd + sizeof("rapp notify ")-1;
     *handled = TRUE;
     if (McuUtility_ScanDecimal16uNumber(&p, &val16)==ERR_OK && McuUtility_ScanDecimal32uNumber(&p, &val32u)==ERR_OK) {
-      RAPP_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, val16, val32u, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_NOTIFY_VALUE, val16, val32u, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
     } else {
       McuShell_SendStr((unsigned char*)"ERR: wrong id format\r\n", io->stdErr);
       return ERR_FAILED;
@@ -211,7 +224,7 @@ uint8_t RNETA_ParseCommand(const unsigned char *cmd, bool *handled, const McuShe
     p = cmd + sizeof("rapp set ")-1;
     *handled = TRUE;
     if (McuUtility_ScanDecimal16uNumber(&p, &val16)==ERR_OK && McuUtility_ScanDecimal32uNumber(&p, &val32u)==ERR_OK) {
-      RAPP_SendIdValuePairMessage(RAPP_MSG_TYPE_REQUEST_SET_VALUE, val16, val32u, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_REQUEST_SET_VALUE, val16, val32u, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
     } else {
       McuShell_SendStr((unsigned char*)"ERR: wrong id format\r\n", io->stdErr);
       return ERR_FAILED;
@@ -220,7 +233,7 @@ uint8_t RNETA_ParseCommand(const unsigned char *cmd, bool *handled, const McuShe
     p = cmd + sizeof("rapp query ")-1;
     *handled = TRUE;
     if (McuUtility_ScanDecimal16uNumber(&p, &val16)==ERR_OK) {
-      RAPP_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, val16, 0, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
+      RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, val16, 0, RNETA_GetDestAddr(), RPHY_PACKET_FLAGS_NONE);
     } else {
       McuShell_SendStr((unsigned char*)"ERR: wrong id format\r\n", io->stdErr);
       return ERR_FAILED;
