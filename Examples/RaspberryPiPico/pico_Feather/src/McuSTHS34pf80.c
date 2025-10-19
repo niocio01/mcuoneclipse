@@ -135,6 +135,7 @@ uint8_t McuSTHS34pf80_GetFuncStatus(sths34pf80_func_status_t *func_status)
     return ERR_OK; /* Success */
 }
 
+#if McuSTHS34PF80_CONFIG_USE_INTERRUPT
 uint8_t McuSTHS34pf80_RegisterIntruptCallback(void (*callback)(void))
 {
     if (callback == NULL) {
@@ -144,6 +145,7 @@ uint8_t McuSTHS34pf80_RegisterIntruptCallback(void (*callback)(void))
     irqCallback = callback;
     return ERR_OK;
 }
+#endif
 
 uint8_t McuSTHS34pf80_SetPresenceThreshold(uint16_t threshold) {
     if (sths34pf80_presence_threshold_set(&dev_ctx, threshold) != 0) {
@@ -609,6 +611,7 @@ static void platform_delay(uint32_t ms)
     McuWait_Waitms(ms);
 }
 
+#if McuSTHS34PF80_CONFIG_USE_INTERRUPT
 static void InitIRQPin(void) {
   McuGPIO_Config_t config;
 
@@ -624,6 +627,7 @@ static void InitIRQPin(void) {
   gpio_set_irq_enabled_with_callback(McuSTHS34PF80_CONFIG_INT_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_IsrCallback);
 }
 
+
 static void gpio_IsrCallback(uint gpio, uint32_t events) {
   switch(gpio) {
     case McuSTHS34PF80_CONFIG_INT_PIN:
@@ -636,4 +640,5 @@ static void gpio_IsrCallback(uint gpio, uint32_t events) {
       break;
   }
 }
+#endif
 

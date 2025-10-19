@@ -33,6 +33,10 @@
   #include "McuSTHS34pf80.h"
 #endif
 
+#if PL_CONFIG_USE_US_SENS
+  #include "McuSRT04T.h"
+#endif
+
 #if !PL_CONFIG_USE_PICO_W
   #define LED_PIN   (13) /* GPIO 13, little red led on feather */
 #endif
@@ -80,9 +84,14 @@ static void BlinkTask(void *pv) {
 }
 
 static void SensorReadTask(void *pv) {
+  uint8_t res;
   #if PL_CONFIG_USE_IR_SENS
     uint16_t presenceVal = 0;
     uint16_t lastPresenceVal = 0;
+  #endif
+
+  #if PL_CONFIG_USE_US_SENS
+    uint16_t distanceMM = 0;
   #endif
 
   #if PL_CONFIG_USE_MULTI_TOF
@@ -105,6 +114,35 @@ static void SensorReadTask(void *pv) {
       McuLog_info("Distance: %d mm", Results.distance_mm[0]);
     }
     #endif
+
+    #if PL_CONFIG_USE_US_SENS
+    res = McuSRT04T_MeasureDistance(&distanceMM) ;
+    if (res==ERR_OK) {
+      McuLog_info("US Distance: %d mm", distanceMM);
+    }
+    else{
+      switch(res) {
+        case ERR_BUSY:
+          McuLog_error("US measurement timeout");
+          break;
+        case ERR_PARAM_DATA:
+          McuLog_error("US measurement invalid parameter");
+          break;
+        case ERR_RANGE:
+          McuLog_error("US measurement out of range");
+          break;
+        case ERR_FAILED:
+          McuLog_error("US measurement not initialized");
+          break;
+        case ERR_VALUE:
+          McuLog_error("US measurement invalid value");
+          break;
+        default:
+          McuLog_error("US measurement unknown error");
+          break;
+      }
+    }
+    #endif
     
     #if PL_CONFIG_USE_IR_SENS && McuSTHS34PF80_CONFIG_USE_INTERRUPT != 1 
      if(McuSTHS34pf80_IsDataReady())
@@ -125,7 +163,7 @@ static void SensorReadTask(void *pv) {
      }
     #endif
       
-    vTaskDelay(pdMS_TO_TICKS(5*1000));
+    vTaskDelay(pdMS_TO_TICKS(1*1000));
   }
 }
 
@@ -200,6 +238,7 @@ static void init_i2c_aux(void) {
   }
 }
 
+#if PL_CONFIG_USE_IR_SENS && McuSTHS34PF80_CONFIG_USE_INTERRUPT
 /* callback for IR presence interrupt */
 void McuSTHS34PF80_OnInterrupt(void)
 {  
@@ -225,6 +264,7 @@ void McuSTHS34PF80_OnInterrupt(void)
     }
   }
 }
+#endif
 
 void App_Run(void) {
   init_v_aux(); /* default */

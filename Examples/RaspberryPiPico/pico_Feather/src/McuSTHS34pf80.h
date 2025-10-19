@@ -46,12 +46,14 @@ uint8_t McuSTHS34pf80_GetPresence(bool *presenceFlag, int16_t *presenceVal);
 uint8_t McuSTHS34pf80_GetFuncStatus(sths34pf80_func_status_t *func_status);
 
 
+#if McuSTHS34PF80_CONFIG_USE_INTERRUPT
 /*!
  * \brief Register a callback function for handling interrupts from the STHS34PF80 sensor
  * \param callback pointer to the callback function
  * \return Error code, or ERR_OK
  */
 uint8_t McuSTHS34pf80_RegisterIntruptCallback(void (*callback)(void));
+#endif
 
 /*!
  * \brief Set the presence threshold
