@@ -35,5 +35,17 @@
 				}
             },
         },
+        {
+          "label": "Picotool Upload",
+          "type": "shell", 
+          "group": "build",
+          "command": "picotool load ${workspaceFolder}/build/Debug/pico_Feather.uf2 -f && picotool reboot",
+          "presentation": {
+              "echo": true,
+              "reveal": "always",
+              "panel": "shared"
+          },
+          "problemMatcher": []
+        },
     ]
 }
