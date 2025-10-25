@@ -12,6 +12,10 @@
 
 #include "platform.h"
 
+#if PL_CONFIG_USE_CONFIGURATION_MANAGER
+#include "ConfigTypes.h"
+#endif
+
 /*! type ID's for application messages */
 typedef enum {
   RAPP_MSG_TYPE_STDIN = 0x00,                   /* remote shell standard in channel */
@@ -26,6 +30,8 @@ typedef enum {
   RAPP_MSG_TYPE_NOTIFY_VALUE = 0x56,            /* notify value for 16bit RAPP_MSG_DataIDType, followed by 32bit value */
   RAPP_MSG_TYPE_QUERY_VALUE = 0x57,             /* query value for 16bit RAPP_MSG_DataIDType */
   RAPP_MSG_TYPE_QUERY_VALUE_RESPONSE = 0x58,    /* response for RAPP_MSG_TYPE_QUERY_VALUE request: 16bit RAPP_MSG_DataIDType followed by 32bit data value */
+  RAPP_MSG_TYPE_CONFIG_MESSAGES_START = 0x60,   /* start of configuration manager messages, length depends on request type */
+  RAPP_MSG_TYPE_CONFIG_MESSAGES_END = 0x80,     /* end of configuration manager messages, length depends on request type */
 } RAPP_MSG_Type;
 
 /* IDs for RAPP_MSG_TYPE_REQUEST_SET_VALUE, RAPP_MSG_TYPE_NOTIFY_VALUE, RAPP_MSG_TYPE_QUERY_VALUE and RAPP_MSG_TYPE_QUERY_VALUE_RESPONSE */

@@ -33,6 +33,12 @@
   #include "NeoPixel.h"
   #include "ws2812.h"
 #endif
+#if PL_CONFIG_USE_NVMC
+  #include "McuFlash.h"
+#endif
+#if PL_CONFIG_USE_MININI
+  #include "McuMinINI.h"
+#endif
 #if PL_CONFIG_USE_RTC
   #include "McuPCF85263A.h"
 #endif
@@ -50,6 +56,10 @@
 
 #if PL_CONFIG_USE_BATTERY
   #include "McuBattery.h"
+#endif
+
+#if PL_CONFIG_USE_CONFIGURATION_MANAGER
+  #include "ConfigurationManager.h"
 #endif
 
 #if PL_CONFIG_USE_TUD_CDC
@@ -141,6 +151,9 @@ void PL_Init(void) {
 #endif
 #if PL_CONFIG_USE_BATTERY
   McuBattery_Init();
+#endif
+#if PL_CONFIG_USE_CONFIGURATION_MANAGER
+  CONFIG_Init();
 #endif
 
 }

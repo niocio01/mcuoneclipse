@@ -26,22 +26,25 @@ extern "C" {
 #define PL_CONFIG_USE_WIFI            (0)
 #define PL_CONFIG_USE_BUTTONS         (0)
 #define PL_CONFIG_USE_MININI          (0)
-#define PL_CONFIG_USE_NVMC            (0)
+#define PL_CONFIG_USE_NVMC            (1)
 
 /* RTC */
 #define PL_CONFIG_USE_RTC             (0) /* RTC support using PCF85263A.h */
 
 /* STHS34PF80 IR sensor */
-#define PL_CONFIG_USE_IR_SENS         (0) /* STHS34PF80 sensor support */
+#define PL_CONFIG_USE_IR_SENS         (1) /* STHS34PF80 sensor support */
 
 /* VL53L5CX TOF sensor */
 #define PL_CONFIG_USE_MULTI_TOF       (0) /* VL53L5CX sensor support */
 
 /* SRT04T UR sensor */
-#define PL_CONFIG_USE_US_SENS         (1) /* SR04T sensor support */
+#define PL_CONFIG_USE_US_SENS         (0) /* SR04T sensor support */
 
 /* Battery voltage measurement */
 #define PL_CONFIG_USE_BATTERY         (1) /* Battery voltage measurement via ADC */
+
+/* Configuration Manager support */
+#define PL_CONFIG_USE_CONFIGURATION_MANAGER (1)
 
 /* I2C */
 #if (PL_CONFIG_USE_RTC || PL_CONFIG_USE_IR_SENS || PL_CONFIG_USE_MULTI_TOF)

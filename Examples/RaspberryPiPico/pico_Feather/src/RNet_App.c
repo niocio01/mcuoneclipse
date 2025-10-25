@@ -247,6 +247,14 @@ uint8_t RNETA_ParseCommand(const unsigned char *cmd, bool *handled, const McuShe
       McuShell_SendStr((unsigned char*)"ERR: wrong address\r\n", io->stdErr);
       return ERR_FAILED;
     }
+  } else if (McuUtility_strcmp((char*)cmd, (char*)"rapp test")==0) {
+    *handled = TRUE;  
+    unsigned char testStr[] = "A1\nB2\n\nC3\n\n\n";
+    if (RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_OUT, testStr, McuUtility_strlen((char*)testStr))!=ERR_OK) {
+      McuShell_SendStr((unsigned char*)"failed!\r\n", io->stdErr);
+    }
+    
+    
 #if RNET_CONFIG_REMOTE_STDIO
   } else if (McuUtility_strncmp((char*)cmd, (char*)"rapp send", sizeof("rapp send")-1)==0) {
     unsigned char buf[32];

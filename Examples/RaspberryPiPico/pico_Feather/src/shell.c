@@ -45,6 +45,9 @@
 #if PL_CONFIG_USE_IR_SENS
   #include "McuSTHS34pf80.h"
 #endif
+#if PL_CONFIG_USE_CONFIGURATION_MANAGER
+  #include "ConfigurationManager.h"
+#endif
 
 static const McuShell_ParseCommandCallback CmdParserTable[] =
 {
@@ -87,6 +90,9 @@ static const McuShell_ParseCommandCallback CmdParserTable[] =
 #endif
 #if PL_CONFIG_USE_IR_SENS
   McuSTHS34pf80_ParseCommand,
+#endif
+#if PL_CONFIG_USE_CONFIGURATION_MANAGER
+  CONFIG_ParseCommand,
 #endif
   NULL /* Sentinel */
 };

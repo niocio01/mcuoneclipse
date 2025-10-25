@@ -49,6 +49,7 @@ target_link_libraries(
   PRIVATE hardware_pio  # WS2812B
   PRIVATE hardware_dma
   PRIVATE hardware_adc  # Battery module ADC
+  PRIVATE hardware_flash # Flash access for Configuration Manager
 
   PUBLIC rdimonLib # file I/O with semihosting
   PUBLIC gcov      # GNU gcov library

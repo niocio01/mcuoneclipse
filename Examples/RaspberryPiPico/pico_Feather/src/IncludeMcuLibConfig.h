@@ -124,7 +124,7 @@
 /* ---------------------------------------------------------------------- */
 /* McuShell */
 #define McuShell_CONFIG_PROJECT_NAME_STRING         "RP2040 Feather"
-#define McuShell_CONFIG_PROMPT_STRING               "pico> "
+#define McuShell_CONFIG_DEFAULT_PROMPT_STRING       "pico> "
 #define McuShell_CONFIG_MULTI_CMD_ENABLED           (1)
 #define McuShell_CONFIG_MULTI_CMD_SIZE              (96)
 #define McuShell_CONFIG_DEFAULT_SHELL_BUFFER_SIZE   (128)
@@ -165,12 +165,14 @@
 #define MCUSPI_CONFIG_TRANSFER_BAUDRATE         500000U
 /* ---------------------------------------------------------------------------------------*/
 /* McuRNF24L01 */
-#define McuNRF24L01_CONFIG_IS_ENABLED           (1)
-#define McuNRF24L01_CONFIG_USE_MUTEX            (0)
-#define McuNRF24L01_CONFIG_CE_PIN_NUMBER        (29) /* GPIO29 -> A3/pin8 on feather */
-#define McuNRF24L01_CONFIG_CSN_PIN_NUMBER       (24) /* GPIO24 -> D24/pin9 on feather */
-#define McuNRF24L01_CONFIG_IRQ_PIN_NUMBER       (25) /* GPIO25 -> D24/pin10 on feather */
-#define McuNRF24L01_CONFIG_IRQ_PIN_ENABLED      (1)
+#define McuNRF24L01_CONFIG_IS_ENABLED               (1)
+#define McuNRF24L01_CONFIG_FEATURE_SET_MAX_RETRIES  (5) /* number of retries to set Features register */
+#define McuNRF24L01_CONFIG_USE_MUTEX                (0)
+#define McuNRF24L01_CONFIG_CE_PIN_NUMBER            (29) /* GPIO29 -> A3/pin8 on feather */
+#define McuNRF24L01_CONFIG_CSN_PIN_NUMBER           (24) /* GPIO24 -> D24/pin9 on feather */
+#define McuNRF24L01_CONFIG_IRQ_PIN_NUMBER           (25) /* GPIO25 -> D24/pin10 on feather */
+#define McuNRF24L01_CONFIG_IRQ_PIN_ENABLED          (1)
+#define McuNRF24L01_CONFIG_USE_BYTE_CORRUPTION_FIX  (1) /* Enable workaround for NRF24L01+ byte corruption bug */
 /* ---------------------------------------------------------------------------------------*/
 /* McuRNET */
 #define McuRNET_CONFIG_IS_ENABLED               (1)

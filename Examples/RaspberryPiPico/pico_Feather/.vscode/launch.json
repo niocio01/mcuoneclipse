@@ -13,7 +13,7 @@
             "device": "RP2040_M0_0",
             "interface": "swd",
             "serialNumber": "801047489", // A
-            // "serialNumber": "801048069", // B
+            //"serialNumber": "801048069", // B
             "runToEntryPoint": "main", // "_reset_handler" or for example "main"
             "postLaunchCommands": [
                 "monitor semihosting enable",
